@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import {
   GestureResponderEvent,
   Image,
@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/Button";
 import { CustomDropdown } from "@/components/Dropdown";
 import { Input } from "@/components/Input";
-import { saveProfile } from "@/services/storage";
+import { loadProfile, saveProfile } from "@/services/storage";
 import { colors } from "@/theme/colors";
 import { router } from "expo-router";
 import { indexStyles as styles } from "./styles";
@@ -48,8 +48,23 @@ const Welcome: React.FC<WelcomeProps> = ({
 
   const handleStartJourney = () => {
     saveProfile({ name, careerInterest: interest as any });
-    router.replace("/(tabs)");
+    router.replace("/trilhas");
   };
+
+  useEffect(() => {
+    const checkProfile = async () => {
+      try {
+        const profile = await loadProfile();
+        if (profile) {
+          router.replace("/trilhas");
+        }
+      } catch (e) {
+        console.error("Erro ao verificar perfil:", e);
+      }
+    };
+
+    checkProfile();
+  }, []);
 
   return (
     <View testID={testID} style={[styles.container, style]}>

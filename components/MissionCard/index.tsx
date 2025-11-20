@@ -1,7 +1,7 @@
 import { colors } from "@/theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Text, View, ViewStyle } from "react-native";
+import { Pressable, Text, View, ViewStyle } from "react-native";
 import { styles } from "./styles";
 
 interface MissionCardProps {
@@ -11,6 +11,7 @@ interface MissionCardProps {
   rightIcon?: React.ReactNode;
   locked?: boolean;
   style?: ViewStyle;
+  onPress?: () => void;
 }
 
 export const MissionCard: React.FC<MissionCardProps> = ({
@@ -20,9 +21,17 @@ export const MissionCard: React.FC<MissionCardProps> = ({
   rightIcon,
   locked = false,
   style,
+  onPress,
 }) => {
   return (
-    <View style={[styles.card, style]}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.card,
+        style,
+        pressed && { opacity: 0.85 },
+      ]}
+    >
       <View style={styles.left}>
         <View
           style={[
@@ -50,14 +59,15 @@ export const MissionCard: React.FC<MissionCardProps> = ({
             { backgroundColor: locked ? "#F5F6F7" : "#FFF4D9" },
           ]}
         >
-          {rightIcon ?? locked ? (
-            <Ionicons name="lock-closed" color={colors.darkGray} />
-          ) : (
-            <Ionicons name="flash" color={colors.primary} />
-          )}
+          {rightIcon ??
+            (locked ? (
+              <Ionicons name="lock-closed" color={colors.darkGray} />
+            ) : (
+              <Ionicons name="flash" color={colors.primary} />
+            ))}
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

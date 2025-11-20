@@ -3,8 +3,8 @@ import Header from "@/components/Header";
 import ProfileCard from "@/components/ProfileCard";
 import PromotionsList from "@/components/PromotionsList";
 import TabBar from "@/components/TabBar";
-import { loadProfile } from "@/services/storage";
-import React, { useEffect, useState } from "react";
+import { useProfile } from "@/contexts/ProfileContext";
+import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const MOCK_BADGES = [
@@ -34,26 +34,25 @@ const MOCK_PROMOTIONS = [
 ];
 
 export default function Profile() {
-  const [name, setName] = useState<string | undefined>(undefined);
+  const { profile, progress, refreshProgress } = useProfile();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const userProfile = await loadProfile();
-
-      if (userProfile) {
-        setName(userProfile.name);
-      }
-    };
-
-    fetchProfile();
+  // Ensure we have latest progress when route mounts
+  React.useEffect(() => {
+    refreshProgress();
   }, []);
 
   return (
     <View style={styles.container}>
-      <Header title={name} />
+      <Header title={profile?.name} xp={progress?.xp ?? 0} />
 
       <ScrollView contentContainerStyle={styles.content}>
-        <ProfileCard name={name} level={1} xp={0} missions={0} badges={3} />
+        <ProfileCard
+          name={profile?.name}
+          level={1}
+          xp={progress?.xp ?? 0}
+          missions={0}
+          badges={progress?.badges?.length ?? 0}
+        />
 
         <AchievementsList badges={MOCK_BADGES} />
 

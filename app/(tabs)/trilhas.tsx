@@ -1,9 +1,9 @@
 import Header from "@/components/Header";
 import MissionCard from "@/components/MissionCard";
 import TabBar from "@/components/TabBar";
-import { loadProfile } from "@/services/storage";
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useProfile } from "@/contexts/ProfileContext";
+import React from "react";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { indexStyles as styles } from "./styles";
 
 const MOCK_MISSIONS = [
@@ -35,23 +35,47 @@ const MOCK_MISSIONS = [
 ];
 
 export default function HomeScreen() {
-  const [name, setName] = useState<string | undefined>(undefined);
+  const { profile, progress, addXp } = useProfile();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const userProfile = await loadProfile();
+  const handleMissionPress = async (mission: any, idx: number) => {
+    if (mission.locked) {
+      Alert.alert(
+        "Missão bloqueada",
+        "Complete os requisitos para desbloquear a missão."
+      );
+      return;
+    }
 
-      if (userProfile) {
-        setName(userProfile.name);
+    // XP gained for this mission — customize as needed
+    const xpAmount = 50;
+
+    try {
+      const updated = await addXp(xpAmount);
+      if (updated) {
+        Alert.alert(
+          "XP ganho",
+          `Você ganhou ${xpAmount} XP! Total: ${updated.xp} XP`
+        );
+      } else {
+        Alert.alert(
+          "Erro",
+          "Não foi possível atualizar seu XP. Tente novamente."
+        );
       }
-    };
+    } catch (e) {
+      console.error("Erro ao adicionar XP:", e);
+      Alert.alert(
+        "Erro",
+        "Não foi possível atualizar seu XP. Tente novamente."
+      );
+    }
+  };
 
-    fetchProfile();
-  }, []);
+  // profile is provided by ProfileContext
 
   return (
     <View style={styles.wrapper}>
-      <Header name={name} />
+      <Header name={profile?.name} xp={progress?.xp ?? 0} />
 
       <ScrollView contentContainerStyle={styles.content} style={{ flex: 1 }}>
         <Text style={styles.sectionTitle}>Mapa de Trilhas</Text>
@@ -71,6 +95,7 @@ export default function HomeScreen() {
                 subtitle={m.subtitle}
                 locked={m.locked}
                 style={{ marginLeft: 12, marginRight: 12 }}
+                onPress={() => handleMissionPress(m, idx)}
               />
             ))}
           </View>

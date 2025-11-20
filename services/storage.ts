@@ -23,8 +23,6 @@ export const loadProfile = async (): Promise<UserProfile | null> => {
   }
 };
 
-// --- Funções de Progresso (UserProgress) ---
-
 const initialProgress: UserProgress = {
   xp: 0,
   levelsCompleted: [],
@@ -32,14 +30,9 @@ const initialProgress: UserProgress = {
   lastLogin: new Date().toISOString(),
 };
 
-/**
- * Carrega o progresso atual do usuário.
- * Retorna o progresso ou o estado inicial se não houver dados.
- */
 export const loadProgress = async (): Promise<UserProgress> => {
   try {
     const jsonValue = await AsyncStorage.getItem(PROGRESS_KEY);
-    // Se houver dados, parse e retorna; senão, retorna o estado inicial.
     return jsonValue != null
       ? (JSON.parse(jsonValue) as UserProgress)
       : initialProgress;
@@ -49,10 +42,6 @@ export const loadProgress = async (): Promise<UserProgress> => {
   }
 };
 
-/**
- * Atualiza o progresso do usuário (XP e missões).
- * @param newProgress - O objeto completo de progresso atualizado.
- */
 export const updateProgress = async (
   newProgress: UserProgress
 ): Promise<void> => {
@@ -64,9 +53,18 @@ export const updateProgress = async (
   }
 };
 
-/**
- * Função de conveniência para limpar todos os dados (útil para testes).
- */
+export const addXp = async (amount: number): Promise<UserProgress> => {
+  try {
+    const progress = await loadProgress();
+    progress.xp = (progress.xp ?? 0) + amount;
+    await updateProgress(progress);
+    return progress;
+  } catch (e) {
+    console.error("Erro ao adicionar XP:", e);
+    return initialProgress;
+  }
+};
+
 export const clearAllData = async (): Promise<void> => {
   try {
     await AsyncStorage.clear();
