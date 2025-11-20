@@ -51,11 +51,10 @@ const Welcome: React.FC<WelcomeProps> = ({
   const handleStartJourney = async () => {
     const data = { name, careerInterest: interest as any };
     await saveProfile(data);
-    // update context immediately so screens react without waiting for storage reload
     try {
       await setProfile(data as any);
     } catch (e) {
-      // ignore
+      console.error("Erro ao atualizar o perfil:", e);
     }
     router.replace("/trilhas");
   };

@@ -51,11 +51,8 @@ export default function HomeScreen() {
       return;
     }
 
-    // navigate to mission screen, pass missionId
     router.push(`/mission?missionId=${encodeURIComponent(mission.id)}`);
   };
-
-  // profile is provided by ProfileContext
 
   return (
     <View style={styles.wrapper}>
@@ -68,7 +65,6 @@ export default function HomeScreen() {
         </Text>
 
         <View style={localStyles.listWrapper}>
-          {/* vertical connector line */}
           <View style={localStyles.verticalLine} />
 
           <View style={{ width: "100%" }}>

@@ -37,7 +37,6 @@ const MOCK_PROMOTIONS = [
 export default function Profile() {
   const { profile, progress, refreshProgress } = useProfile();
 
-  // Ensure we have latest progress when route mounts
   React.useEffect(() => {
     refreshProgress();
   }, []);
