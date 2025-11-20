@@ -1,4 +1,5 @@
 import { useProfile } from "@/contexts/ProfileContext";
+import useRequireProfile from "@/hooks/useRequireProfile";
 import { colors } from "@/theme/colors";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -51,6 +52,7 @@ const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => {
 export default function MissionScreen() {
   const router = useRouter();
   const { addXp } = useProfile();
+  useRequireProfile();
 
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);

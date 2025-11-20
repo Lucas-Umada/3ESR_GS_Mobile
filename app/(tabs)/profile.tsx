@@ -4,6 +4,7 @@ import ProfileCard from "@/components/ProfileCard";
 import PromotionsList from "@/components/PromotionsList";
 import TabBar from "@/components/TabBar";
 import { useProfile } from "@/contexts/ProfileContext";
+import useRequireProfile from "@/hooks/useRequireProfile";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
@@ -40,6 +41,8 @@ export default function Profile() {
   React.useEffect(() => {
     refreshProgress();
   }, []);
+
+  useRequireProfile();
 
   return (
     <View style={styles.container}>

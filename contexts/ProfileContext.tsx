@@ -10,6 +10,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 interface ProfileContextValue {
   profile: UserProfile | null;
   progress: UserProgress | null;
+  initialized: boolean;
   setProfile: (p: UserProfile) => Promise<void>;
   addXp: (amount: number) => Promise<UserProgress | null>;
   refreshProgress: () => Promise<void>;
@@ -30,6 +31,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [profile, setProfileState] = useState<UserProfile | null>(null);
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -37,6 +39,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({
       const prog = await loadProgress();
       setProfileState(p);
       setProgress(prog);
+      setInitialized(true);
     };
 
     init();
@@ -65,7 +68,14 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ProfileContext.Provider
-      value={{ profile, progress, setProfile, addXp, refreshProgress }}
+      value={{
+        profile,
+        progress,
+        initialized,
+        setProfile,
+        addXp,
+        refreshProgress,
+      }}
     >
       {children}
     </ProfileContext.Provider>

@@ -13,7 +13,8 @@ import {
 import { Button } from "@/components/Button";
 import { CustomDropdown } from "@/components/Dropdown";
 import { Input } from "@/components/Input";
-import { loadProfile, saveProfile } from "@/services/storage";
+import { useProfile } from "@/contexts/ProfileContext";
+import { saveProfile } from "@/services/storage";
 import { colors } from "@/theme/colors";
 import { router } from "expo-router";
 import { indexStyles as styles } from "./styles";
@@ -45,26 +46,25 @@ const Welcome: React.FC<WelcomeProps> = ({
   const { width } = useWindowDimensions();
   const [name, setName] = React.useState("");
   const [interest, setInterest] = React.useState("");
+  const { profile, setProfile, initialized } = useProfile();
 
-  const handleStartJourney = () => {
-    saveProfile({ name, careerInterest: interest as any });
+  const handleStartJourney = async () => {
+    const data = { name, careerInterest: interest as any };
+    await saveProfile(data);
+    // update context immediately so screens react without waiting for storage reload
+    try {
+      await setProfile(data as any);
+    } catch (e) {
+      // ignore
+    }
     router.replace("/trilhas");
   };
 
   useEffect(() => {
-    const checkProfile = async () => {
-      try {
-        const profile = await loadProfile();
-        if (profile) {
-          router.replace("/trilhas");
-        }
-      } catch (e) {
-        console.error("Erro ao verificar perfil:", e);
-      }
-    };
-
-    checkProfile();
-  }, []);
+    if (initialized && profile) {
+      router.replace("/trilhas");
+    }
+  }, [initialized, profile]);
 
   return (
     <View testID={testID} style={[styles.container, style]}>

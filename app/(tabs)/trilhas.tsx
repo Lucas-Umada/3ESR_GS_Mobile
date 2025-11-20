@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import MissionCard from "@/components/MissionCard";
 import TabBar from "@/components/TabBar";
 import { useProfile } from "@/contexts/ProfileContext";
+import useRequireProfile from "@/hooks/useRequireProfile";
+import { useRouter } from "expo-router";
 import React from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { indexStyles as styles } from "./styles";
@@ -35,9 +37,12 @@ const MOCK_MISSIONS = [
 ];
 
 export default function HomeScreen() {
-  const { profile, progress, addXp } = useProfile();
+  const { profile, progress } = useProfile();
+  const router = useRouter();
 
-  const handleMissionPress = async (mission: any, idx: number) => {
+  useRequireProfile();
+
+  const handleMissionPress = (mission: any, idx: number) => {
     if (mission.locked) {
       Alert.alert(
         "Missão bloqueada",
@@ -46,29 +51,8 @@ export default function HomeScreen() {
       return;
     }
 
-    // XP gained for this mission — customize as needed
-    const xpAmount = 50;
-
-    try {
-      const updated = await addXp(xpAmount);
-      if (updated) {
-        Alert.alert(
-          "XP ganho",
-          `Você ganhou ${xpAmount} XP! Total: ${updated.xp} XP`
-        );
-      } else {
-        Alert.alert(
-          "Erro",
-          "Não foi possível atualizar seu XP. Tente novamente."
-        );
-      }
-    } catch (e) {
-      console.error("Erro ao adicionar XP:", e);
-      Alert.alert(
-        "Erro",
-        "Não foi possível atualizar seu XP. Tente novamente."
-      );
-    }
+    // navigate to mission screen, pass missionId
+    router.push(`/mission?missionId=${encodeURIComponent(mission.id)}`);
   };
 
   // profile is provided by ProfileContext
