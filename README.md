@@ -1,50 +1,64 @@
-# Welcome to your Expo app 👋
+# 🚀 SkillQuest: Gamificando o Futuro do Trabalho
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 🌟 Visão Geral
 
-## Get started
+O **SkillQuest** é um aplicativo móvel desenvolvido em **React Native** com **TypeScript** que utiliza a gamificação (pontos, missões e badges) para auxiliar usuários na requalificação profissional (_reskilling_), abordando as competências cruciais para o cenário do Futuro do Trabalho.
 
-1. Install dependencies
+Esta solução cumpre os requisitos da Global Solution (GS) do 2º Semestre de 2025 para a disciplina **Mobile Development & IoT**.
 
-   ```bash
-   npm install
-   ```
+## ✨ Destaques da Solução
 
-2. Start the app
+- **Tema Central:** O Futuro do Trabalho.
+- **Requisito de Tecnologia:** Desenvolvido em **React Native**.
+- **Persistência de Dados:** Utiliza **AsyncStorage** para salvar o progresso (XP, missões completadas, perfil) localmente no dispositivo, conforme exigido pela disciplina.
+- **Funcionalidades Principais:** Cadastro de Perfil, Trilhas de Aprendizado (Mapa), Missões Interativas (Quiz), e Tela de Recompensas/Badges.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🛠️ Configuração e Execução do Projeto
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Siga os passos abaixo para configurar e rodar o SkillQuest no seu ambiente de desenvolvimento.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 1. Pré-requisitos
 
-## Get a fresh project
+Certifique-se de ter o **Node.js** e o **Expo CLI** instalados globalmente.
 
-When you're ready, run:
+# Instalar o Expo CLI (se ainda não tiver)
 
-```bash
-npm run reset-project
-```
+npm install -g expo-cli
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Clonagem do Repositório
 
-## Learn more
+Clone o repositório com o seguinte comando:
 
-To learn more about developing your project with Expo, look at the following resources:
+git clone https://github.com/Lucas-Umada/3ESR_GS_Mobile
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Entre na pasta do projeto
 
-## Join the community
+cd skillquest
 
-Join our community of developers creating universal apps.
+### 3. Instalação de Dependências
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Instale todas as dependências do projeto, incluindo @react-native-async-storage/async-storage e @react-native-picker/picker.
+
+# Instala todas as dependências do package.json
+
+yarn install
+
+### 4. Inicialização do Aplicativo
+
+Para iniciar o projeto e visualizá-lo, use o comando start do Yarn
+
+yarn start
+
+Ao rodar o comando, um QR Code será exibido no seu terminal. Você pode escanear este código utilizando o aplicativo Expo Go no seu celular (iOS ou Android) para ver o projeto em tempo real ou apertar a tecla **W** para abrir o projeto no navegador.
+
+### 👥 Integrantes do Grupo
+
+Lucas Yuji Farias Umada - RM99757
+Gustavo Henrique Santos Bonfim - RM98864
+Enzo Luiz Goulart - RM99666
+
+## Link do Repositório para a Entrega:
+
+https://github.com/Lucas-Umada/3ESR_GS_Mobile
